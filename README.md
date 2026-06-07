@@ -6,8 +6,6 @@ SwiftSeis is a lightweight, native macOS viewer for 2D and 3D seismic data in th
 
 ## Features
 
-We built this tool to help professionals quickly load and navigate 2D and 3D seismic data on macOS. It includes:
-
 *   **Memory-Mapped I/O**: Opens large SEG-Y files efficiently without loading the entire dataset into RAM.
 *   **Hardware-Accelerated Rendering**: Uses Metal to draw Variable Density and Wiggle Trace overlays smoothly.
 *   **3D Volume Support**: Navigate through 3D seismic cubes using an interactive 3D bounding box to view Inline, Crossline, and Z-Slice planes simultaneously, with adjustable vertical stretch.
