@@ -17,7 +17,9 @@ SwiftSeis is a lightweight, native macOS viewer for 2D and 3D seismic data in th
 ## Getting Started
 
 ### Using Pre-built Releases
-If you downloaded the compiled `SwiftSeis.app` bundle:
+You can download the latest compiled `SwiftSeis.app` from the [Releases page](https://github.com/olxxi/SwiftSeis/releases/).
+
+If you downloaded the compiled bundle:
 1.  Drag the `SwiftSeis.app` into your `/Applications` folder.
 2.  *Note on Gatekeeper*: Because the release binary is ad-hoc signed, macOS might prompt you upon first launch. 
     *   **Right-click** the app icon and choose **Open**, then confirm in the dialog.
