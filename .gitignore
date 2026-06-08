@@ -42,7 +42,7 @@ seismic/
 *.segy
 *.SU
 *.su
-
+*.zip
 # IDE / Editor
 .idea/
 .vscode/

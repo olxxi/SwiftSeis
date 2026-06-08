@@ -327,6 +327,19 @@ public class MetalRenderer: NSObject, MTKViewDelegate {
     public func updateWiggleGeometry(samples: [[Float]], ns: Int, selectedTraceIndices: Set<Int> = []) {
         guard let device = device, samples.count > 0, ns > 0 else { return }
         
+        // Prevent massive memory allocations for wiggle traces on very large lines
+        // A full 2D line (e.g. 8000 traces * 11000 samples = ~90M points) would require > 10GB of GPU buffers.
+        let totalSamples = samples.count * ns
+        if totalSamples > 2_500_000 {
+            wiggleMutex.lock()
+            self.wiggleVertexCount = 0
+            self.wiggleFillCount = 0
+            self.wiggleVertexBuffer = nil
+            self.wiggleFillBuffer = nil
+            wiggleMutex.unlock()
+            return
+        }
+        
         // Compute max amplitude of current active samples
         var maxAmplitude: Float = 0.0
         for t in 0..<samples.count {
