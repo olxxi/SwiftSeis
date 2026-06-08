@@ -9,7 +9,7 @@ SwiftSeis is a lightweight, native macOS viewer for 2D and 3D seismic data in th
 *   **Memory-Mapped I/O**: Opens large SEG-Y files efficiently without loading the entire dataset into RAM.
 *   **Hardware-Accelerated Rendering**: Uses Metal to draw Variable Density and Wiggle Trace overlays smoothly.
 *   **3D Volume Support**: Navigate through 3D seismic cubes using an interactive 3D bounding box to view Inline, Crossline, and Z-Slice planes simultaneously, with adjustable vertical stretch.
-*   **Automated Quality Control (QC)**: Instantly generate comprehensive QC reports summarizing dataset health.
+*   **Automated Quality Control (QC)**: Generate QC reports summarizing dataset health.
     *   **Geometry Validation**: Detect missing traces, duplicate grids, and zero-coordinate traces with visual maps.
     *   **Signal Analysis**: Calculate amplitude statistics (Min, Max, Mean, RMS), detect dead traces, and plot amplitude distributions.
     *   **Frequency Spectrum**: Compute and visualize the average 1D Fast Fourier Transform (FFT) power spectrum.
