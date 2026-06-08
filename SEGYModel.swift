@@ -48,6 +48,8 @@ public struct TraceHeader: Identifiable, Hashable {
     public var recY: Int32
     public var inline: Int32
     public var crossline: Int32
+    public var ns: Int16
+    public var dt: Int16
 }
 
 public class SEGYModel: ObservableObject {
@@ -306,23 +308,32 @@ public class SEGYModel: ObservableObject {
                 memcpy(&val, ptr.advanced(by: off), 4)
                 return localIsBigEndian ? Int32(bigEndian: val) : Int32(littleEndian: val)
             }
-            
-            for i in 0..<localNumTraces {
-                let offset = localFirstTraceOffset + i * localTraceSize
+                func readInt16Background(at off: Int) -> Int16 {
+                    guard let ptr = localMappedPointer.pointer, off + 2 <= localFileSize else { return 0 }
+                    var val: Int16 = 0
+                    memcpy(&val, ptr.advanced(by: off), 2)
+                    return localIsBigEndian ? Int16(bigEndian: val) : Int16(littleEndian: val)
+                }
                 
-                let seqLine = readInt32Background(at: offset + 0)
-                let seqFile = readInt32Background(at: offset + 4)
-                let fieldRecord = readInt32Background(at: offset + 8)
-                let fieldTrace = readInt32Background(at: offset + 12)
-                let trOffset = readInt32Background(at: offset + 36)
-                let elev = readInt32Background(at: offset + 40)
-                let srcX = readInt32Background(at: offset + 72)
-                let srcY = readInt32Background(at: offset + 76)
-                let recX = readInt32Background(at: offset + 80)
-                let recY = readInt32Background(at: offset + 84)
-                
-                let inline = readInt32Background(at: offset + localInlineByteOffset)
-                let crossline = readInt32Background(at: offset + localCrosslineByteOffset)
+                for i in 0..<localNumTraces {
+                    let offset = localFirstTraceOffset + i * localTraceSize
+                    
+                    let seqLine = readInt32Background(at: offset + 0)
+                    let seqFile = readInt32Background(at: offset + 4)
+                    let fieldRecord = readInt32Background(at: offset + 8)
+                    let fieldTrace = readInt32Background(at: offset + 12)
+                    let trOffset = readInt32Background(at: offset + 36)
+                    let elev = readInt32Background(at: offset + 40)
+                    let srcX = readInt32Background(at: offset + 72)
+                    let srcY = readInt32Background(at: offset + 76)
+                    let recX = readInt32Background(at: offset + 80)
+                    let recY = readInt32Background(at: offset + 84)
+                    
+                    let nsVal = readInt16Background(at: offset + 114)
+                    let dtVal = readInt16Background(at: offset + 116)
+                    
+                    let inline = readInt32Background(at: offset + localInlineByteOffset)
+                    let crossline = readInt32Background(at: offset + localCrosslineByteOffset)
                 
                 let header = TraceHeader(
                     id: i,
@@ -337,7 +348,9 @@ public class SEGYModel: ObservableObject {
                     recX: recX,
                     recY: recY,
                     inline: inline,
-                    crossline: crossline
+                    crossline: crossline,
+                    ns: nsVal,
+                    dt: dtVal
                 )
                 tempHeaders.append(header)
                 

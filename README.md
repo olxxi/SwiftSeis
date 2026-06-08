@@ -9,10 +9,16 @@ SwiftSeis is a lightweight, native macOS viewer for 2D and 3D seismic data in th
 *   **Memory-Mapped I/O**: Opens large SEG-Y files efficiently without loading the entire dataset into RAM.
 *   **Hardware-Accelerated Rendering**: Uses Metal to draw Variable Density and Wiggle Trace overlays smoothly.
 *   **3D Volume Support**: Navigate through 3D seismic cubes using an interactive 3D bounding box to view Inline, Crossline, and Z-Slice planes simultaneously, with adjustable vertical stretch.
-*   **Header & Trace Inspection**: Examine textual headers (EBCDIC/ASCII), binary headers, and individual trace values.
+*   **Automated Quality Control (QC)**: Instantly generate comprehensive QC reports summarizing dataset health.
+    *   **Geometry Validation**: Detect missing traces, duplicate grids, and zero-coordinate traces with visual maps.
+    *   **Signal Analysis**: Calculate amplitude statistics (Min, Max, Mean, RMS), detect dead traces, and plot amplitude distributions.
+    *   **Frequency Spectrum**: Compute and visualize the average 1D Fast Fourier Transform (FFT) power spectrum.
+    *   **PDF Export**: Export your complete QC findings, including charts and the decoded EBCDIC text header, to a formatted PDF.
+*   **Interactive Header Plotting**: Plot trace header values (Offsets, Elevations, Source X/Y) on a 2D line chart synchronized with your seismic display.
+*   **Header & Trace Inspection**: Examine textual headers (EBCDIC/ASCII), binary headers, and individual trace values in real-time.
 *   **Survey Map**: A 2D minimap projection of the survey geometry, showing the current line.
-*   **Navigation & Export**: Smooth zooming and panning controls, and the ability to export high-resolution screenshots of the currently viewed line.
-*   **Coordinate Auto-Detection**: Automatically identifies common inline/crossline byte offsets (e.g., standard SEG-Y, Landmark/Petrel).
+*   **Navigation & Export**: Zooming and panning controls, and the ability to export high-resolution PNG snapshots of the currently viewed line.
+*   **Coordinate Auto-Detection**: Automatically identifies common inline/crossline byte offsets (e.g., standard SEG-Y, Petrel, etc.).
 
 ## Getting Started
 

@@ -30,6 +30,11 @@ xcrun -sdk macosx swiftc -O \
   LocationMapView.swift \
   LocationMapWindowController.swift \
   HeaderPlotView.swift \
+  QCReportWindowController.swift \
+  QCModels.swift \
+  QCAnalyzer.swift \
+  QCReportView.swift \
+  QCExport.swift \
   -o "${MACOS_DIR}/${APP_NAME}"
 
 echo "Packaging Info.plist..."

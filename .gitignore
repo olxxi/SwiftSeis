@@ -43,6 +43,8 @@ seismic/
 *.SU
 *.su
 *.zip
+*.pdf
+
 # IDE / Editor
 .idea/
 .vscode/

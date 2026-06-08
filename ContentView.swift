@@ -39,7 +39,13 @@ public struct ContentView: View {
     @State private var z3DSliceProgress = 0.0
     @State private var z3DSliceTask: Task<Void, Never>? = nil
     
-    // File loading state
+    // QC State
+    @State private var isShowingQCReport = false
+    @State private var isQCRunning = false
+    @State private var qcProgress: Double = 0.0
+    @State private var qcReport: QCReport? = nil
+    
+    // Rendering State
     @State private var isFileLoading = false
     @State private var fileLoadingProgress = 0.0
     
@@ -240,6 +246,24 @@ public struct ContentView: View {
         }
         .onChange(of: activeZIndex) {
             zIndexInput = "\(activeZIndex)"
+        }
+    }
+    
+    private func runQC() {
+        guard !isQCRunning else { return }
+        isQCRunning = true
+        qcProgress = 0.0
+        
+        Task {
+            let report = await QCAnalyzer.runQC(model: model) { progress in
+                self.qcProgress = progress
+            }
+            
+            await MainActor.run {
+                self.qcReport = report
+                self.isQCRunning = false
+                QCReportWindowController.shared.show(with: report)
+            }
         }
     }
     
@@ -985,6 +1009,23 @@ public struct ContentView: View {
                     .padding(12),
                     alignment: .bottomTrailing
                 )
+                .overlay(alignment: .center) {
+                    if isFileLoading {
+                        ProgressView("Loading File...", value: fileLoadingProgress, total: 1.0)
+                            .progressViewStyle(LinearProgressViewStyle())
+                            .padding()
+                            .frame(width: 250)
+                            .background(Color(nsColor: .windowBackgroundColor).opacity(0.9))
+                            .cornerRadius(8)
+                    } else if isQCRunning {
+                        ProgressView("Running QC Analysis...", value: qcProgress, total: 1.0)
+                            .progressViewStyle(LinearProgressViewStyle())
+                            .padding()
+                            .frame(width: 250)
+                            .background(Color(nsColor: .windowBackgroundColor).opacity(0.9))
+                            .cornerRadius(8)
+                    }
+                }
         }
     }
     
@@ -1164,6 +1205,12 @@ public struct ContentView: View {
                     Label("Location Map", systemImage: "map")
                 }
                 .help("Open 2D Location Map")
+                
+                Button(action: runQC) {
+                    Label("Run QC", systemImage: "checkmark.seal")
+                }
+                .help("Run Quality Control Analysis")
+                .disabled(model.filePath == nil || isFileLoading || isQCRunning)
                 
                 Button(action: {
                     rendererWrapper.exportFullSeismicImage { image in
